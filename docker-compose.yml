@@ -24,7 +24,7 @@ services:
       - ./cas-data/config-slapd:/etc/ldap/slapd.d
       - ./cas-data/schema/spid.schema:/container/service/slapd/assets/config/bootstrap/schema/spid.schema
     networks:
-      - web
+      - cas-dev
 
   phpldapadmin:
     image: osixia/phpldapadmin:0.9.0
@@ -41,7 +41,7 @@ services:
       PHPLDAPADMIN_HTTPS_KEY_FILENAME: "privkey.pem" 
       PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME: "fullchain.pem" 
     networks:
-      - web
+      - cas-dev
 
   cas:
     build:
@@ -51,7 +51,7 @@ services:
     links: 
       - openldap:ldap-host
     networks:
-    - web
+    - cas-dev
 
   # casmanagement:
   #   container_name: casmanagement
@@ -99,7 +99,7 @@ services:
       - ./letsencrypt/live/directoryxx.com:/etc/nginx/certs
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - web
+      - cas-dev
 
   mongo:
     image: mongo
@@ -113,7 +113,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     networks:
-      - web
+      - cas-dev
 
   mongo-express:
     image: mongo-express
@@ -125,7 +125,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
     networks:
-      - web
+      - cas-dev
 
 networks:
-  web:
+  cas-dev:
+    external: true
